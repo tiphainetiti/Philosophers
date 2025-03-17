@@ -1,51 +1,56 @@
 #################################################
 ## COLORS
-BLACK = \033[0;30m
-RED = \033[0;31m
-GREEN = \033[0;32m
-YELLOW = \033[0;33m
-BLUE = \033[0;34m
+BLACK   = \033[0;30m
+RED     = \033[0;31m
+GREEN   = \033[0;32m
+YELLOW  = \033[0;33m
+BLUE    = \033[0;34m
 MAGENTA = \033[0;35m
-CYAN = \033[0;36m
-WHITE = \033[0;37m
-END = \033[0m
+CYAN    = \033[0;36m
+WHITE   = \033[0;37m
+END     = \033[0m
 
 #################################################
 ## ARGUMENTS
 
-NAME				= philo
-CFLAGS				= -Wall -Werror -Wextra -g3
-CC					= cc
-BUILD				= objs/
+NAME    = philo
+CC      = cc
+CFLAGS  = -Wall -Werror -Wextra -pthread -g3
+BUILD   = objs/
+INCLUDE = includes/
 
 #################################################
 ## SOURCES
 
-SRC_FILES			= 
+SRC_FILES = main \
+			utils
 
-OBJ_FILES			= $(addprefix $(BUILD), $(addsuffix .o, ${SRC_FILES}))
+SRC       = $(addprefix srcs/, $(addsuffix .c, $(SRC_FILES)))
+OBJ_FILES = $(patsubst srcs/%.c, $(BUILD)%.o, $(SRC))
 
 #################################################
 ## RULES
 
-${NAME} : ${OBJ_FILES}
-		@${NAME} ${OBJ_FILES}
-		@echo "$(GREEN)Compilation terminée! 👍$(END)"
+all: $(NAME)
 
-objs/%.o: srcs/%.c
-	@mkdir -p ${BUILD}
-	@${CC} ${CFLAGS} -c $< -o $@
+$(NAME): $(OBJ_FILES)
+	@$(CC) $(CFLAGS) $(OBJ_FILES) -o $(NAME)
+	@echo "$(MAGENTA)Modified: $?..$(END)"
+	@echo "$(GREEN)Compilation done!$(END)"
 
-all : ${NAME}
+$(BUILD)%.o: srcs/%.c
+	@mkdir -p $(BUILD)
+	@echo "$(YELLOW)Compilation of $*..$(END)"
+	@$(CC) $(CFLAGS) -I$(INCLUDE) -c $< -o $@
 
-clean :
-		@rm -rf ${BUILD}
-		@echo "$(YELLOW)Fichiers objets supprimés.$(END)"
+clean:
+	@rm -rf $(BUILD)
+	@echo "$(CYAN)Cleaning intermediate files.$(END)"
 
-fclean : clean
-		@rm -f ${NAME}
-		@echo "$(RED)Bibliothèque supprimée.$(END)"
+fclean: clean
+	@rm -f $(NAME)
+	@echo "$(GREEN)All clean!$(END)"
 
-re : fclean all
+re: fclean all
 
-.PHONY : all clean fclean re
+.PHONY: all clean fclean re
