@@ -6,7 +6,7 @@
 /*   By: tiphainelay <tiphainelay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:26 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/24 17:18:27 by tiphainelay      ###   ########.fr       */
+/*   Updated: 2025/03/24 18:51:58 by tiphainelay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	init_parameters(t_parameters *parameters, char **av)
 	if (av[5])
 		parameters->number_of_times_must_eat = ft_atoi(av[5]);
 	parameters->philo = NULL;
+	pthread_mutex_init(&parameters->lock_death, NULL);
 	pthread_mutex_init(&parameters->lock_meal, NULL);
 	pthread_mutex_init(&parameters->lock_print, NULL);
 }

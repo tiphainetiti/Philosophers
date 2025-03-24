@@ -6,7 +6,7 @@
 /*   By: tiphainelay <tiphainelay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:01:49 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/24 18:17:21 by tiphainelay      ###   ########.fr       */
+/*   Updated: 2025/03/24 18:53:43 by tiphainelay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_parameters
 	long				start_time;
 	bool				someone_died;
 	struct s_philo		*philo;
+	pthread_mutex_t		lock_death;
 	pthread_mutex_t		lock_meal;
 	pthread_mutex_t		lock_print;
 }						t_parameters;
@@ -63,6 +64,5 @@ void					init_philo(t_philo *philo, t_parameters *parameters);
 void					lets_think(t_philo *philo, t_parameters *parameters);
 void					lets_sleep(t_philo *philo, t_parameters *parameters);
 void					lets_eat(t_philo *philo, t_parameters *parameters);
-void					is_someone_died(t_philo *philo,
-							t_parameters *parameters);
+bool					is_someone_died(t_parameters *parameters);
 void					*philosopher_routine(void *arg);

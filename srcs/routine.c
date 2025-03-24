@@ -6,7 +6,7 @@
 /*   By: tiphainelay <tiphainelay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:14:23 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/24 18:18:18 by tiphainelay      ###   ########.fr       */
+/*   Updated: 2025/03/24 18:54:31 by tiphainelay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ void	lets_think(t_philo *philo, t_parameters *parameters)
 {
 	display_message(philo, "is thinking");
 	// Formule Gauth
-	usleep((parameters->time_to_eat + parameters->time_to_sleep
-			- parameters->time_to_die) * 1000 / 2);
+	// usleep((parameters->time_to_eat + parameters->time_to_sleep
+	// 		- parameters->time_to_die) * 1000 / 2);
+	usleep(parameters->time_to_sleep * 1000);
 }
 
 void	lets_sleep(t_philo *philo, t_parameters *parameters)
@@ -55,10 +56,18 @@ void	lets_eat(t_philo *philo, t_parameters *parameters)
 	if (parameters->number_of_times_must_eat > 0)
 		parameters->number_of_times_must_eat--;
 	pthread_mutex_unlock(&parameters->lock_meal);
-	is_someone_died(philo, parameters);
 }
 
-void	is_someone_died(t_philo *philo, t_parameters *parameters)
+bool	is_someone_died(t_parameters *parameters)
+{
+	pthread_mutex_lock(&parameters->lock_death);
+	if (parameters->someone_died == true)
+		return (true);
+	pthread_mutex_unlock(&parameters->lock_death);
+	return (false);
+}
+
+void	someone_died(t_philo *philo, t_parameters *parameters)
 {
 	long	current_time;
 	long	time_since_last_meal;
@@ -84,11 +93,13 @@ void	*philosopher_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	parameters = philo->parameters;
-	while (parameters->someone_died == false)
+	while (is_someone_died(parameters) == false
+		|| parameters->number_of_times_must_eat > 0)
 	{
 		lets_eat(philo, parameters);
 		lets_sleep(philo, parameters);
 		lets_think(philo, parameters);
 	}
+	printf("FINISHED\n");
 	return (NULL);
 }
