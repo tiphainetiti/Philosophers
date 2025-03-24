@@ -23,6 +23,8 @@ INCLUDE = includes/
 ## SOURCES
 
 SRC_FILES = main \
+			init \
+			routine \
 			utils
 
 SRC       = $(addprefix srcs/, $(addsuffix .c, $(SRC_FILES)))
@@ -35,7 +37,6 @@ all: $(NAME)
 
 $(NAME): $(OBJ_FILES)
 	@$(CC) $(CFLAGS) $(OBJ_FILES) -o $(NAME)
-	@echo "$(MAGENTA)Modified: $?..$(END)"
 	@echo "$(GREEN)Compilation done!$(END)"
 
 $(BUILD)%.o: srcs/%.c
