@@ -6,7 +6,7 @@
 /*   By: tiphainelay <tiphainelay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:01:49 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/24 18:53:43 by tiphainelay      ###   ########.fr       */
+/*   Updated: 2025/03/25 15:58:31 by tiphainelay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_philo
 {
 	pthread_t			philo;
 	int					position;
+	int					eaten_meals;
 	long				last_meal;
 	pthread_mutex_t		my_fork;
 	struct s_parameters	*parameters;
@@ -64,5 +65,11 @@ void					init_philo(t_philo *philo, t_parameters *parameters);
 void					lets_think(t_philo *philo, t_parameters *parameters);
 void					lets_sleep(t_philo *philo, t_parameters *parameters);
 void					lets_eat(t_philo *philo, t_parameters *parameters);
-bool					is_someone_died(t_parameters *parameters);
 void					*philosopher_routine(void *arg);
+
+// check.c
+bool					is_someone_died(t_parameters *parameters);
+void					someone_died(t_philo *philo, t_parameters *parameters);
+// bool					is_everyone_full(t_philo *philo);
+bool					is_everyone_full(t_parameters *parameters);
+int						the_hungriest(t_philo *philo);

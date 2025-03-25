@@ -25,7 +25,8 @@ INCLUDE = includes/
 SRC_FILES = main \
 			init \
 			routine \
-			utils
+			utils \
+			check
 
 SRC       = $(addprefix srcs/, $(addsuffix .c, $(SRC_FILES)))
 OBJ_FILES = $(patsubst srcs/%.c, $(BUILD)%.o, $(SRC))

@@ -6,7 +6,7 @@
 /*   By: tiphainelay <tiphainelay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:26 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/24 18:51:58 by tiphainelay      ###   ########.fr       */
+/*   Updated: 2025/03/25 15:26:28 by tiphainelay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	init_parameters(t_parameters *parameters, char **av)
 	pthread_mutex_init(&parameters->lock_meal, NULL);
 	pthread_mutex_init(&parameters->lock_print, NULL);
 }
+
 void	init_philo(t_philo *philo, t_parameters *parameters)
 {
 	int	seat;
@@ -48,7 +49,10 @@ void	init_philo(t_philo *philo, t_parameters *parameters)
 			philo[seat].next = &philo[0]; // Le dernier est lié au premier
 		else
 			philo[seat].next = &philo[seat + 1];
+		philo[seat].eaten_meals = 0;
+		philo[seat].last_meal = get_current_time_in_ms();
 		pthread_mutex_init(&philo[seat].my_fork, NULL);
 		seat++;
 	}
+	parameters->philo = philo;
 }
