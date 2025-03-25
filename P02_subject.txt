@@ -33,7 +33,7 @@ Le moniteur.
 
 Pour savoir l'etat de tes philos, si ils sont morts ou si ils ont assez
 mange, tu utilisera un moniteur. Met le dans ton main programme.
-met un usleep(1000); pour pas qu'il eclate ton PC. l'echelle de temps
+met un ft_usleep(1000); pour pas qu'il eclate ton PC. l'echelle de temps
 d'un ordi est de l'ordre de la micro seconde, donc avec des mili sec
 t'es large.
 

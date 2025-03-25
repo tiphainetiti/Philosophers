@@ -11,7 +11,7 @@ WORKDIR /usr/src/app
 COPY . .
 
 # Compiler le fichier source avec les flags spécifiés
-RUN gcc -Wall -Wextra -Werror -pthread -g -o philo srcs/main.c srcs/init.c srcs/utils.c
+RUN gcc -Wall -Wextra -Werror -pthread philo srcs/main.c srcs/init.c srcs/utils.c srcs/check.c srcs/routine.c
 
 # Définir le point d'entrée pour exécuter Valgrind avec l'outil Helgrind
 ENTRYPOINT ["valgrind", "--tool=helgrind", "./philo"]

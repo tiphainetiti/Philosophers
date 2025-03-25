@@ -6,13 +6,13 @@
 /*   By: tiphainelay <tiphainelay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:35:14 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/25 15:58:22 by tiphainelay      ###   ########.fr       */
+/*   Updated: 2025/03/25 17:37:10 by tiphainelay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-bool	is_someone_died(t_parameters *parameters)
+bool	is_someone_dead(t_parameters *parameters)
 {
 	bool	result;
 

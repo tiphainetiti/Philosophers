@@ -6,7 +6,7 @@
 /*   By: tiphainelay <tiphainelay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:01:49 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/25 15:58:31 by tiphainelay      ###   ########.fr       */
+/*   Updated: 2025/03/25 18:03:35 by tiphainelay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int						main(int ac, char **av);
 
 // utils.c
 int						ft_atoi(const char *str);
+void					ft_usleep(long time);
 long					get_current_time_in_ms(void);
 void					display_message(t_philo *philo, char *message);
 
@@ -68,8 +69,7 @@ void					lets_eat(t_philo *philo, t_parameters *parameters);
 void					*philosopher_routine(void *arg);
 
 // check.c
-bool					is_someone_died(t_parameters *parameters);
+bool					is_someone_dead(t_parameters *parameters);
 void					someone_died(t_philo *philo, t_parameters *parameters);
-// bool					is_everyone_full(t_philo *philo);
 bool					is_everyone_full(t_parameters *parameters);
 int						the_hungriest(t_philo *philo);
