@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:14:23 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/26 19:49:17 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/26 19:54:27 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,8 @@ void	*philosopher_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	parameters = philo->parameters;
-	// if (philo->position % 2 == 0)
-	// 	ft_usleep(parameters, 500);
+	if (philo->position % 2 == 0)
+		ft_usleep(parameters, 100);
 	while (!is_someone_dead(parameters) && !is_everyone_full(parameters))
 	{
 		someone_died(philo, parameters);
