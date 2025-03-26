@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiphainelay <tiphainelay@student.42.fr>    +#+  +:+       +#+        */
+/*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:26 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/25 15:26:28 by tiphainelay      ###   ########.fr       */
+/*   Updated: 2025/03/26 19:26:53 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-void	init_parameters(t_parameters *parameters, char **av)
+int	init_parameters(t_parameters *parameters, char **av)
 {
 	parameters->number_of_philosophers = ft_atoi(av[1]);
 	parameters->time_to_die = ft_atoi(av[2]);
@@ -24,35 +24,40 @@ void	init_parameters(t_parameters *parameters, char **av)
 	if (av[5])
 		parameters->number_of_times_must_eat = ft_atoi(av[5]);
 	parameters->philo = NULL;
-	pthread_mutex_init(&parameters->lock_death, NULL);
-	pthread_mutex_init(&parameters->lock_meal, NULL);
-	pthread_mutex_init(&parameters->lock_print, NULL);
+	if (pthread_mutex_init(&parameters->lock_death, NULL) != 0)
+		return (1);
+	if (pthread_mutex_init(&parameters->lock_meal, NULL) != 0)
+		return (1);
+	if (pthread_mutex_init(&parameters->lock_print, NULL) != 0)
+		return (1);
+	return (0);
 }
 
-void	init_philo(t_philo *philo, t_parameters *parameters)
+int	init_philo(t_philo *philo, t_parameters *parameters)
 {
 	int	seat;
 
 	seat = 0;
 	while (seat < parameters->number_of_philosophers)
 	{
-		// Attribution du numéro (1 à number_of_philosophers)
 		philo[seat].position = seat + 1;
 		philo[seat].parameters = parameters;
-		// Gestion des liens circulaires
 		if (seat == 0)
 			philo[seat].prev = &philo[parameters->number_of_philosophers - 1];
-		// Philosophe 1 est après le dernier
 		else
 			philo[seat].prev = &philo[seat - 1];
 		if (seat == parameters->number_of_philosophers - 1)
-			philo[seat].next = &philo[0]; // Le dernier est lié au premier
+			philo[seat].next = &philo[0];
 		else
 			philo[seat].next = &philo[seat + 1];
 		philo[seat].eaten_meals = 0;
 		philo[seat].last_meal = get_current_time_in_ms();
-		pthread_mutex_init(&philo[seat].my_fork, NULL);
+		if (pthread_mutex_init(&philo[seat].my_fork, NULL) != 0)
+			return (1);
+		if (pthread_mutex_init(&philo[seat].lock_last_meal, NULL) != 0)
+			return (1);
 		seat++;
 	}
 	parameters->philo = philo;
+	return (0);
 }

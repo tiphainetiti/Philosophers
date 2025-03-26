@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiphainelay <tiphainelay@student.42.fr>    +#+  +:+       +#+        */
+/*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 18:31:24 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/25 18:03:08 by tiphainelay      ###   ########.fr       */
+/*   Updated: 2025/03/26 19:39:30 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,75 +19,74 @@ void	print_philo(t_philo *philo, t_parameters *parameters)
 	i = 0;
 	while (i < parameters->number_of_philosophers)
 	{
-		printf("Philosopher[%d]: %d\n", i, philo[i].position);
+		// printf("Philosopher[%d]: %d\n", i, philo[i].position);
 		// printf("Time to die: %d\n", philo[i].parameters->time_to_die);
 		// printf("Time to eat: %d\n", philo[i].parameters->time_to_eat);
 		// printf("Time to sleep: %d\n", philo[i].parameters->time_to_sleep);
 		// printf("Number of times each philosopher must eat: %d\n",
 		// 	philo[i].parameters->number_of_times_must_eat);
-		printf("Eaten meals: %d\n", philo[i].eaten_meals);
+		// printf("Eaten meals: %d\n", philo[i].eaten_meals);
 		// printf("Next philosopher: %d\n", philo[i].next->position);
 		// printf("Previous philosopher: %d\n", philo[i].prev->position);
-		// printf("someone_died: %d\n", philo[i].parameters->someone_died);
+		printf("someone_died: %d\n", philo[i].parameters->someone_died);
 		i++;
 	}
 }
-void	*monitor_routine(void *arg)
-{
-	t_parameters	*parameters;
-	int				i;
 
-	parameters = (t_parameters *)arg;
-	i = 0;
-	while (1)
+int	run_threads(t_philo *philo, t_parameters parameters)
+{
+	pthread_t	monitor_thread;
+	int			seat;
+
+	seat = 0;
+	if (pthread_create(&monitor_thread, NULL, monitor_routine,
+			(void *)&parameters) != 0)
+		return (print_error("Thread creation failed"), 1);
+	if (!is_someone_dead(&parameters) && !is_everyone_full(&parameters))
 	{
-		i = 0;
-		while (i < parameters->number_of_philosophers)
+		while (seat < parameters.number_of_philosophers)
 		{
-			someone_died(&parameters->philo[i], parameters);
-			if (parameters->someone_died || is_everyone_full(parameters))
-				return (NULL);
-			i++;
+			if (pthread_create(&philo[seat].philo, NULL, philosopher_routine,
+					&philo[seat]) != 0)
+				return (print_error("Thread creation failed"),
+					join_threads(philo, parameters));
+			seat++;
 		}
-		ft_usleep(1000);
 	}
-	return (NULL);
+	// seat = 0;
+	// while (seat < parameters.number_of_philosophers)
+	// {
+	// 	if (pthread_join(philo[seat].philo, NULL) != 0)
+	// 		return (print_error("Thread join failed"), 1);
+	// 	seat++;
+	// }
+	if (pthread_join(monitor_thread, NULL) != 0)
+		return (print_error("Thread join failed"), 1);
+	return (join_threads(philo, parameters));
+}
+
+int	run_simulation(char **av)
+{
+	t_parameters	parameters;
+	t_philo			*philo;
+
+	if (init_parameters(&parameters, av) != 0)
+		return (1);
+	if (!(philo = malloc(sizeof(t_philo) * parameters.number_of_philosophers)))
+		return (printf("Error: Malloc failed\n"), 1);
+	if (init_philo(philo, &parameters) != 0)
+		return (1);
+	run_threads(philo, parameters);
+	free_all(&parameters);
+	return (0);
 }
 
 int	main(int ac, char **av)
 {
-	t_parameters	parameters;
-	t_philo			*philo;
-	pthread_t		monitor_thread;
-	int				seat;
-
-	seat = 0;
-	if (ac < 5 || ac > 6 || ft_atoi(av[1]) < 2)
+	if (ac < 5 || ac > 6)
 		return (printf("Error: Wrong number of arguments\n"), 1);
-	else
-	{
-		init_parameters(&parameters, av);
-		if (!(philo = malloc(sizeof(t_philo)
-					* parameters.number_of_philosophers)))
-			return (printf("Error: Malloc failed\n"), 1);
-		init_philo(philo, &parameters);
-		// Création des threads
-		pthread_create(&monitor_thread, NULL, monitor_routine,
-			(void *)&parameters);
-		while (seat < parameters.number_of_philosophers)
-		{
-			pthread_create(&philo[seat].philo, NULL, philosopher_routine,
-				&philo[seat]);
-			seat++;
-		}
-		// Attente des threads
-		seat = 0;
-		while (seat < parameters.number_of_philosophers)
-		{
-			pthread_join(philo[seat].philo, NULL);
-			seat++;
-		}
-		pthread_join(monitor_thread, NULL);
-	}
+	else if (!parsing_digit(av) || !parsing_limit(av)
+		|| run_simulation(av) != 0)
+		return (1);
 	return (0);
 }

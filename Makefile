@@ -26,7 +26,10 @@ SRC_FILES = main \
 			init \
 			routine \
 			utils \
-			check
+			check \
+			monitor \
+			parsing \
+			cleaning
 
 SRC       = $(addprefix srcs/, $(addsuffix .c, $(SRC_FILES)))
 OBJ_FILES = $(patsubst srcs/%.c, $(BUILD)%.o, $(SRC))

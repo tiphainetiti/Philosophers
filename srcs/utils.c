@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiphainelay <tiphainelay@student.42.fr>    +#+  +:+       +#+        */
+/*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:38:35 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/25 18:11:31 by tiphainelay      ###   ########.fr       */
+/*   Updated: 2025/03/26 18:21:09 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,18 @@ int	ft_atoi(const char *str)
 	return (result);
 }
 
-void	ft_usleep(long time)
+void	ft_usleep(t_parameters *parameters, long time)
 {
 	long	start_time;
 
 	start_time = get_current_time_in_ms();
 	while (get_current_time_in_ms() - start_time < time)
-		usleep(50);
+	{
+		if (!is_someone_dead(parameters))
+			usleep(50);
+		else
+			break ;
+	}
 }
 
 long	get_current_time_in_ms(void)
@@ -70,4 +75,9 @@ void	display_message(t_philo *philo, char *message)
 		printf("%ld %d %s\n", current_time, philo->position, message);
 		pthread_mutex_unlock(&philo->parameters->lock_print);
 	}
+}
+
+void	print_error(char *message)
+{
+	printf("Error: %s.\n", message);
 }
