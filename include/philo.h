@@ -6,11 +6,12 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:01:49 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/27 14:03:58 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/27 19:59:26 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // INCLUDES
+#include <errno.h>
 #include <pthread.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -38,11 +39,13 @@ typedef struct s_parameters
 typedef struct s_philo
 {
 	pthread_t			philo;
+	int					currently_eating;
 	int					position;
 	int					eaten_meals;
 	long				last_meal;
 	pthread_mutex_t		my_fork;
 	pthread_mutex_t		lock_last_meal;
+	pthread_mutex_t		lock_eating;
 	struct s_parameters	*parameters;
 	struct s_philo		*next;
 	struct s_philo		*prev;
@@ -50,7 +53,7 @@ typedef struct s_philo
 
 // PROTOTYPES
 // main.c
-void					print_philo(t_philo *philo, t_parameters *parameters);
+// void					print_philo(t_philo *philo, t_parameters *parameters);
 int						main(int ac, char **av);
 
 // utils.c
@@ -67,6 +70,7 @@ int						init_philo(t_philo *philo, t_parameters *parameters);
 // routine.c
 void					lets_think(t_philo *philo, t_parameters *parameters);
 void					lets_sleep(t_philo *philo, t_parameters *parameters);
+void					put_back_forks(t_philo *philo);
 void					lets_eat(t_philo *philo, t_parameters *parameters);
 void					*philosopher_routine(void *arg);
 

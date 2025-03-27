@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 18:31:24 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/27 13:55:21 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/27 20:13:10 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	run_threads(t_philo *philo, t_parameters parameters)
 	pthread_t	monitor_thread;
 	int			seat;
 
+	// int			ret;
 	seat = 0;
 	if (pthread_create(&monitor_thread, NULL, monitoring,
 			(void *)&parameters) != 0)
@@ -52,7 +53,8 @@ int	run_threads(t_philo *philo, t_parameters parameters)
 	}
 	if (pthread_join(monitor_thread, NULL) != 0)
 		return (print_error("Thread join failed"), 1);
-	return (join_threads(philo, parameters));
+	join_threads(philo, parameters);
+	return (0);
 }
 
 int	run_simulation(char **av)

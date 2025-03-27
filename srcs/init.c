@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:42:26 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/26 19:26:53 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/27 19:59:39 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,12 @@ int	init_philo(t_philo *philo, t_parameters *parameters)
 			philo[seat].next = &philo[seat + 1];
 		philo[seat].eaten_meals = 0;
 		philo[seat].last_meal = get_current_time_in_ms();
+		philo[seat].currently_eating = 0;
 		if (pthread_mutex_init(&philo[seat].my_fork, NULL) != 0)
 			return (1);
 		if (pthread_mutex_init(&philo[seat].lock_last_meal, NULL) != 0)
+			return (1);
+		if (pthread_mutex_init(&philo[seat].lock_eating, NULL) != 0)
 			return (1);
 		seat++;
 	}
