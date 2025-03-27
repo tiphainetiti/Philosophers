@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:35:14 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/26 19:44:18 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/27 14:03:55 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,33 @@ bool	is_someone_dead(t_parameters *parameters)
 	pthread_mutex_unlock(&parameters->lock_death);
 	return (result);
 }
-
-void	someone_died(t_philo *philo, t_parameters *parameters)
+bool	someone_died(t_parameters *parameters)
 {
+	int		i;
 	long	current_time;
 	long	time_since_last_meal;
 
 	current_time = get_current_time_in_ms();
-	pthread_mutex_lock(&philo->lock_last_meal);
-	time_since_last_meal = current_time - philo->last_meal;
-	pthread_mutex_unlock(&philo->lock_last_meal);
-	if (time_since_last_meal > parameters->time_to_die)
+	i = 0;
+	while (i < parameters->number_of_philosophers)
 	{
-		display_message(philo, "died");
-		pthread_mutex_lock(&parameters->lock_death);
-		parameters->someone_died = true;
-		pthread_mutex_unlock(&parameters->lock_death);
+		pthread_mutex_lock(&parameters->philo[i].lock_last_meal);
+		time_since_last_meal = current_time - parameters->philo[i].last_meal;
+		pthread_mutex_unlock(&parameters->philo[i].lock_last_meal);
+		if (time_since_last_meal > parameters->time_to_die)
+		{
+			pthread_mutex_lock(&parameters->lock_death);
+			if (!parameters->someone_died)
+			{
+				parameters->someone_died = true;
+				display_message(&parameters->philo[i], "died");
+			}
+			pthread_mutex_unlock(&parameters->lock_death);
+			return (true);
+		}
+		i++;
 	}
+	return (false);
 }
 
 bool	is_everyone_full(t_parameters *parameters)

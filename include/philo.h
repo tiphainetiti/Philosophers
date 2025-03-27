@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:01:49 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/26 19:39:19 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/27 14:03:58 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,17 +72,14 @@ void					*philosopher_routine(void *arg);
 
 // check.c
 bool					is_someone_dead(t_parameters *parameters);
-void					someone_died(t_philo *philo, t_parameters *parameters);
+bool					someone_died(t_parameters *parameters);
 bool					is_everyone_full(t_parameters *parameters);
 int						the_hungriest(t_philo *philo);
 
 // monitor.c
-void					*monitor_routine(void *arg);
-// bool					check_all_eaten(t_parameters *parameters);
-// bool					check_death(t_parameters *parameters);
-// void					print_death(t_philo *philo, t_parameters *parameters);
-// bool					monitor_death(t_parameters *parameters);
-// void					*monitoring(void *arg);
+int						dead_loop(t_philo *philo);
+int						dead_check(t_parameters *parameters, t_philo *philo);
+void					*monitoring(void *av);
 
 // parsing.c
 bool					parsing_digit(char **av);

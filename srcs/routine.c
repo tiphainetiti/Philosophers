@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:14:23 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/26 19:54:27 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/27 14:07:03 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	lets_think(t_philo *philo, t_parameters *parameters)
 {
-	if (!is_someone_dead(parameters) && !is_everyone_full(parameters))
+	if (!is_someone_dead(parameters))
 	{
 		display_message(philo, "is thinking");
 		ft_usleep(parameters, parameters->time_to_eat * 0.9);
@@ -23,7 +23,7 @@ void	lets_think(t_philo *philo, t_parameters *parameters)
 
 void	lets_sleep(t_philo *philo, t_parameters *parameters)
 {
-	if (!is_someone_dead(parameters) && !is_everyone_full(parameters))
+	if (!is_someone_dead(parameters))
 	{
 		display_message(philo, "is sleeping");
 		ft_usleep(parameters, parameters->time_to_sleep);
@@ -32,7 +32,7 @@ void	lets_sleep(t_philo *philo, t_parameters *parameters)
 
 void	grab_forks(t_philo *philo, t_parameters *parameters)
 {
-	if (!is_someone_dead(parameters) || !is_everyone_full(parameters))
+	if (!is_someone_dead(parameters))
 	{
 		if (philo->position % 2 == 0)
 		{
@@ -76,15 +76,14 @@ void	lets_eat(t_philo *philo, t_parameters *parameters)
 		display_message(philo, "has taken a fork");
 		pthread_mutex_unlock(&philo->next->my_fork);
 		ft_usleep(parameters, parameters->time_to_die);
-		someone_died(philo, parameters);
 		return ;
 	}
 	if (parameters->number_of_philosophers % 2 != 0
 		&& parameters->time_to_die < parameters->time_to_eat
-		&& hungriest_index != philo->position && !is_someone_dead(parameters))
+		&& hungriest_index != philo->position)
 		lets_think(philo, parameters);
 	grab_forks(philo, parameters);
-	if (!is_someone_dead(parameters) && !is_everyone_full(parameters))
+	if (!is_someone_dead(parameters))
 	{
 		display_message(philo, "is eating");
 		pthread_mutex_lock(&philo->lock_last_meal);
@@ -107,9 +106,12 @@ void	*philosopher_routine(void *arg)
 		ft_usleep(parameters, 100);
 	while (!is_someone_dead(parameters) && !is_everyone_full(parameters))
 	{
-		someone_died(philo, parameters);
 		lets_eat(philo, parameters);
+		if (is_someone_dead(parameters))
+			break ;
 		lets_sleep(philo, parameters);
+		if (is_someone_dead(parameters))
+			break ;
 		lets_think(philo, parameters);
 	}
 	return (NULL);

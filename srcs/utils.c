@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:38:35 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/26 18:21:09 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/27 14:04:13 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,16 @@ int	ft_atoi(const char *str)
 	return (result);
 }
 
-void	ft_usleep(t_parameters *parameters, long time)
+void	ft_usleep(t_parameters *parameters, long time_in_ms)
 {
 	long	start_time;
 
 	start_time = get_current_time_in_ms();
-	while (get_current_time_in_ms() - start_time < time)
+	while (get_current_time_in_ms() - start_time < time_in_ms)
 	{
-		if (!is_someone_dead(parameters))
-			usleep(50);
-		else
+		if (is_someone_dead(parameters))
 			break ;
+		usleep(100);
 	}
 }
 
@@ -68,8 +67,7 @@ void	display_message(t_philo *philo, char *message)
 	long	current_time;
 
 	current_time = get_current_time_in_ms() - philo->parameters->start_time;
-	if (!is_someone_dead(philo->parameters)
-		&& !is_everyone_full(philo->parameters))
+	if (!is_someone_dead(philo->parameters))
 	{
 		pthread_mutex_lock(&philo->parameters->lock_print);
 		printf("%ld %d %s\n", current_time, philo->position, message);
