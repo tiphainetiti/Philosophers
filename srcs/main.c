@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 18:31:24 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/28 16:28:34 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/28 18:09:36 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,3 +60,24 @@ int	main(int ac, char **av)
 		return (1);
 	return (0);
 }
+
+// bool	should_philosopher_die(int number_of_philosophers, int time_to_die,
+// int time_to_eat, int time_to_sleep)
+// {
+//     int	time_for_one_cycle;
+//     int	max_wait_time;
+
+//     // Temps pour qu'un philosophe mange et dorme
+//     time_for_one_cycle = time_to_eat + time_to_sleep;
+
+//     // Temps maximum qu'un philosophe doit attendre avant de manger
+//     if (number_of_philosophers % 2 == 0)
+//         max_wait_time = (number_of_philosophers / 2 - 1) * time_to_eat;
+//     else
+//         max_wait_time = (number_of_philosophers / 2) * time_to_eat;
+
+//     // Si le temps d'attente dépasse time_to_die, le philosophe mourra
+//     if (max_wait_time + time_to_eat > time_to_die)
+//         return (true);
+//     return (false);
+// }

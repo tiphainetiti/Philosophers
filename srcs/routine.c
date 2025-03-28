@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:14:23 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/28 16:24:23 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/28 18:13:59 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void	lets_sleep(t_philo *philo, t_parameters *parameters)
 
 void	lets_eat(t_philo *philo, t_parameters *parameters)
 {
-	grab_forks(philo);
 	if (!is_someone_dead(parameters))
 	{
+		grab_forks(philo);
 		pthread_mutex_lock(&philo->lock_meal);
 		philo->currently_eating = 1;
 		display_message(philo, "is eating");
@@ -47,8 +47,8 @@ void	lets_eat(t_philo *philo, t_parameters *parameters)
 		pthread_mutex_lock(&philo->lock_meal);
 		philo->currently_eating = 0;
 		pthread_mutex_unlock(&philo->lock_meal);
+		put_back_forks(philo);
 	}
-	put_back_forks(philo);
 }
 
 void	*philosopher_routine(void *arg)

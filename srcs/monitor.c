@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:17:45 by tlay              #+#    #+#             */
-/*   Updated: 2025/03/28 16:38:35 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/28 18:45:26 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ int	dead_loop(t_philo *philo)
 {
 	int				i;
 	t_parameters	*parameters;
+	long			current_time;
 
+	current_time = get_current_time_in_ms() - philo->parameters->start_time;
 	parameters = philo->parameters;
 	i = 0;
 	while (i < parameters->number_of_philosophers)
@@ -43,10 +45,12 @@ int	dead_loop(t_philo *philo)
 		if (dead_check(parameters, &philo[i]) == 1
 			&& philo[i].currently_eating == 0)
 		{
-			display_message(&philo[i], "died");
 			pthread_mutex_lock(&parameters->lock_death);
 			parameters->someone_died = true;
 			pthread_mutex_unlock(&parameters->lock_death);
+			pthread_mutex_lock(&parameters->lock_print);
+			printf("%ld %d died\n", current_time, philo[i].position);
+			pthread_mutex_unlock(&parameters->lock_print);
 			return (1);
 		}
 		i++;
