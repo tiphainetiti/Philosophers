@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:38:35 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/27 14:04:13 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/28 14:08:15 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,10 @@ void	display_message(t_philo *philo, char *message)
 	long	current_time;
 
 	current_time = get_current_time_in_ms() - philo->parameters->start_time;
+	pthread_mutex_lock(&philo->parameters->lock_print);
 	if (!is_someone_dead(philo->parameters))
-	{
-		pthread_mutex_lock(&philo->parameters->lock_print);
 		printf("%ld %d %s\n", current_time, philo->position, message);
-		pthread_mutex_unlock(&philo->parameters->lock_print);
-	}
+	pthread_mutex_unlock(&philo->parameters->lock_print);
 }
 
 void	print_error(char *message)

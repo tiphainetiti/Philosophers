@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 16:01:49 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/27 19:59:26 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/28 13:55:51 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ typedef struct s_philo
 	int					eaten_meals;
 	long				last_meal;
 	pthread_mutex_t		my_fork;
-	pthread_mutex_t		lock_last_meal;
-	pthread_mutex_t		lock_eating;
+	pthread_mutex_t		lock_meal;
 	struct s_parameters	*parameters;
 	struct s_philo		*next;
 	struct s_philo		*prev;

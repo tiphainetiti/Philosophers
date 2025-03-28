@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:27:07 by tlay              #+#    #+#             */
-/*   Updated: 2025/03/27 19:28:19 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/28 13:55:51 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	destroy_mutex(t_parameters *parameters)
 	while (i < parameters->number_of_philosophers)
 	{
 		pthread_mutex_destroy(&parameters->philo[i].my_fork);
-		pthread_mutex_destroy(&parameters->philo[i].lock_last_meal);
+		pthread_mutex_destroy(&parameters->philo[i].lock_meal);
 		i++;
 	}
 	pthread_mutex_destroy(&parameters->lock_death);
