@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:38:35 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/28 15:15:03 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/28 16:24:32 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,3 @@ void	print_error(char *message)
 {
 	printf("Error: %s.\n", message);
 }
-
-
-// 0 philosopher sf
-// parsing no values under 60 ms

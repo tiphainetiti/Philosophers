@@ -25,6 +25,7 @@ INCLUDE = includes/
 SRC_FILES = main \
 			init \
 			routine \
+			routine_utils \
 			utils \
 			check \
 			monitor \
@@ -32,7 +33,8 @@ SRC_FILES = main \
 			cleaning
 
 SRC       = $(addprefix srcs/, $(addsuffix .c, $(SRC_FILES)))
-OBJ_FILES = $(patsubst srcs/%.c, $(BUILD)%.o, $(SRC))
+OBJ_FILES = $(addprefix $(BUILD), $(notdir $(SRC:.c=.o)))
+
 
 #################################################
 ## RULES

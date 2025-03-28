@@ -5,20 +5,22 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/05 16:01:49 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/28 13:55:51 by tlay             ###   ########.fr       */
+/*   Created: 2025/03/28 16:13:57 by tlay              #+#    #+#             */
+/*   Updated: 2025/03/28 16:26:17 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef PHILO_H
+# define PHILO_H
+
 // INCLUDES
-#include <errno.h>
-#include <pthread.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/time.h>
-#include <unistd.h>
+# include <pthread.h>
+# include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/time.h>
+# include <unistd.h>
 
 // STRUCTURES
 typedef struct s_parameters
@@ -51,33 +53,23 @@ typedef struct s_philo
 }						t_philo;
 
 // PROTOTYPES
-// main.c
-// void					print_philo(t_philo *philo, t_parameters *parameters);
-int						main(int ac, char **av);
+// check.c
+bool					is_someone_dead(t_parameters *parameters);
+bool					is_everyone_full(t_parameters *parameters);
 
-// utils.c
-int						ft_atoi(const char *str);
-void					ft_usleep(t_parameters *parameters, long time);
-long					get_current_time_in_ms(void);
-void					display_message(t_philo *philo, char *message);
-void					print_error(char *message);
+// cleaning.c
+void					destroy_mutex(t_parameters *parameters);
+void					free_all(t_parameters *parameters);
+int						join_threads(t_philo *philo, t_parameters parameters);
 
 // init.c
 int						init_parameters(t_parameters *parameters, char **av);
 int						init_philo(t_philo *philo, t_parameters *parameters);
 
-// routine.c
-void					lets_think(t_philo *philo, t_parameters *parameters);
-void					lets_sleep(t_philo *philo, t_parameters *parameters);
-void					put_back_forks(t_philo *philo);
-void					lets_eat(t_philo *philo, t_parameters *parameters);
-void					*philosopher_routine(void *arg);
-
-// check.c
-bool					is_someone_dead(t_parameters *parameters);
-bool					someone_died(t_parameters *parameters);
-bool					is_everyone_full(t_parameters *parameters);
-int						the_hungriest(t_philo *philo);
+// main.c
+int						run_threads(t_philo *philo, t_parameters parameters);
+int						run_simulation(char **av);
+int						main(int ac, char **av);
 
 // monitor.c
 int						dead_loop(t_philo *philo);
@@ -88,7 +80,22 @@ void					*monitoring(void *av);
 bool					parsing_digit(char **av);
 bool					parsing_limit(char **av);
 
-// cleaning.c
-void					destroy_mutex(t_parameters *parameters);
-void					free_all(t_parameters *parameters);
-int						join_threads(t_philo *philo, t_parameters parameters);
+// routine_utils.c
+void					grab_forks(t_philo *philo);
+void					put_back_forks(t_philo *philo);
+void					one_philo(t_philo *philo, t_parameters *parameters);
+
+// routine.c
+void					lets_think(t_philo *philo, t_parameters *parameters);
+void					lets_sleep(t_philo *philo, t_parameters *parameters);
+void					lets_eat(t_philo *philo, t_parameters *parameters);
+void					*philosopher_routine(void *arg);
+
+// utils.c
+int						ft_atoi(const char *str);
+void					ft_usleep(t_parameters *parameters, long time);
+long					get_current_time_in_ms(void);
+void					display_message(t_philo *philo, char *message);
+void					print_error(char *message);
+
+#endif
