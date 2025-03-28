@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:14:23 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/28 14:04:14 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/28 15:22:22 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,24 +67,21 @@ void	grab_forks(t_philo *philo)
 		pthread_mutex_lock(&philo->next->my_fork);
 		display_message(philo, "has taken a fork");
 	}
+	// pthread_mutex_lock(&philo->lock_meal);
+	// philo->last_meal = get_current_time_in_ms();
+	// pthread_mutex_unlock(&philo->lock_meal);
 }
 
 void	put_back_forks(t_philo *philo)
 {
 	if (philo->position % 2 == 0)
 	{
-		// printf("Thread %d is unlocking my_fork\n", philo->position);
 		pthread_mutex_unlock(&philo->my_fork);
-		// printf("Thread %d is unlocking nxet->my_fork\n",
-		// philo->position);
 		pthread_mutex_unlock(&philo->next->my_fork);
 	}
 	else
 	{
-		// printf("Thread %d is unlocking my_fork\n", philo->position);
 		pthread_mutex_unlock(&philo->next->my_fork);
-		// printf("Thread %d is unlocking nxet->my_fork\n",
-		// philo->position);
 		pthread_mutex_unlock(&philo->my_fork);
 	}
 }
@@ -114,9 +111,9 @@ void	lets_eat(t_philo *philo, t_parameters *parameters)
 	// 	&& parameters->time_to_die < parameters->time_to_eat
 	// 	&& hungriest_index != philo->position)
 	// 	lets_think(philo, parameters);
-	grab_forks(philo);
 	if (!is_someone_dead(parameters))
 	{
+		grab_forks(philo);
 		pthread_mutex_lock(&philo->lock_meal);
 		philo->currently_eating = 1;
 		display_message(philo, "is eating");
@@ -127,8 +124,8 @@ void	lets_eat(t_philo *philo, t_parameters *parameters)
 		pthread_mutex_lock(&philo->lock_meal);
 		philo->currently_eating = 0;
 		pthread_mutex_unlock(&philo->lock_meal);
+		put_back_forks(philo);
 	}
-	put_back_forks(philo);
 	// pthread_mutex_unlock(&philo->my_fork);
 	// pthread_mutex_unlock(&philo->next->my_fork);
 }
