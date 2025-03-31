@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 17:14:23 by tiphainelay       #+#    #+#             */
-/*   Updated: 2025/03/31 11:53:14 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/31 13:56:45 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ void	lets_think(t_philo *philo, t_parameters *parameters)
 {
 	int	think_time;
 
-	think_time = parameters->time_to_eat - parameters->time_to_sleep + 1;
+	if (parameters->number_of_philosophers % 2 == 1)
+		think_time = parameters->time_to_eat - parameters->time_to_sleep + 1;
+	else
+		think_time = parameters->time_to_eat - parameters->time_to_sleep;
 	if (!is_someone_dead(parameters))
 		display_message(philo, "is thinking");
 	if (think_time > 0)

@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:17:45 by tlay              #+#    #+#             */
-/*   Updated: 2025/03/31 11:53:23 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/31 13:57:13 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	*monitoring(void *av)
 	{
 		if (dead_loop(parameters->philo) == 1 || is_everyone_full(parameters))
 			break ;
-		ft_usleep(parameters, 10);
+		ft_usleep(parameters, 1);
 	}
 	return (NULL);
 }
