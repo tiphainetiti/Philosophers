@@ -6,7 +6,7 @@
 /*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 16:13:57 by tlay              #+#    #+#             */
-/*   Updated: 2025/03/28 16:26:17 by tlay             ###   ########.fr       */
+/*   Updated: 2025/03/31 11:37:40 by tlay             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ void					*monitoring(void *av);
 
 // parsing.c
 bool					parsing_digit(char **av);
+int						ft_strcmp(char *s1, char *s2);
+bool					check_overflow(char *str);
 bool					parsing_limit(char **av);
 
 // routine_utils.c
