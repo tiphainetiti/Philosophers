@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlay <tlay@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tiphainelay <tiphainelay@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:21:35 by tlay              #+#    #+#             */
-/*   Updated: 2025/03/31 11:37:50 by tlay             ###   ########.fr       */
+/*   Updated: 2025/04/08 11:34:42 by tiphainelay      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ bool	parsing_digit(char **av)
 		j = 0;
 		if (av[i][j] == '-' || av[i][j] == '+')
 			j++;
+		if (av[i][j] == '\0')
+			return (print_error("Empty argument"), false);
 		while (av[i][j])
 		{
 			if (av[i][j] < '0' || av[i][j] > '9')
